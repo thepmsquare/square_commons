@@ -23,3 +23,5 @@ pip install square_commons
 ### v1.0.0
 
 - initial version with config reading methods.
+
+## Feedback is appreciated. Thank you!
