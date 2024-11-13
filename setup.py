@@ -4,9 +4,12 @@ package_name = "square_commons"
 
 setup(
     name=package_name,
-    version="1.1.0",
+    version="1.2.0",
     packages=find_packages(),
-    install_requires=["configparser>=6.0.0"],
+    install_requires=[
+        "configparser>=6.0.0",
+        "requests>=2.32.3",
+    ],
     extras_require={},
     author="thePmSquare",
     author_email="thepmsquare@gmail.com",
