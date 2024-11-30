@@ -18,7 +18,9 @@ def make_request_json_output(
     data=None,
     params=None,
     headers=None,
+    files=None,
 ):
+
     try:
         url = f"{base_url}/{endpoint}"
         if headers:
@@ -26,9 +28,11 @@ def make_request_json_output(
         response = requests.request(
             method,
             url,
-            json=data,
+            json=data if files is None else None,
+            data=data if files else None,
             params=params,
             headers=headers,
+            files=files,
         )
         response.raise_for_status()
         return response.json()

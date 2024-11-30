@@ -20,6 +20,10 @@ pip install square_commons
 
 ## changelog
 
+### v1.3.0
+
+- update api_utils -> make_request_json_output to send files as well.
+
 ### v1.2.0
 
 - added make_request_json_output in api_utils.
