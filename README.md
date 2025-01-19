@@ -20,6 +20,10 @@ pip install square_commons
 
 ## changelog
 
+### v1.4.0
+
+- add api_utils -> create_cookie.
+
 ### v1.3.0
 
 - update api_utils -> make_request_json_output to send files as well.

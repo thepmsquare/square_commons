@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any
 
 import requests
@@ -38,3 +39,35 @@ def make_request_json_output(
         return response.json()
     except Exception:
         raise
+
+
+def create_cookie(
+    key: str,
+    value: str,
+    domain: str = None,
+    expires: datetime = None,
+    path: str = "/",
+    same_site: str = "Lax",  # "Strict", "Lax", or "None"
+    secure: bool = False,
+    http_only: bool = True,
+) -> dict:
+    if not key or not value:
+        raise ValueError("Cookie key and value are required.")
+
+    cookie_options = {
+        "httponly": http_only,
+        "path": path,
+        "secure": secure,
+        "samesite": same_site,
+        "value": value,
+        "key": key,
+    }
+
+    if expires:
+        if not isinstance(expires, datetime):
+            raise ValueError("Expires must be a datetime object.")
+        cookie_options["expires"] = expires.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
+
+    if domain:
+        cookie_options["domain"] = domain
+    return cookie_options
