@@ -20,6 +20,10 @@ pip install square_commons
 
 ## changelog
 
+### v1.4.1
+
+- update default param for same_site to strict in api_utils -> create_cookie.
+
 ### v1.4.0
 
 - add api_utils -> create_cookie.
