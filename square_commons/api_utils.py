@@ -47,7 +47,7 @@ def create_cookie(
     domain: str = None,
     expires: datetime = None,
     path: str = "/",
-    same_site: str = "Lax",  # "Strict", "Lax", or "None"
+    same_site: str = "Strict",  # "Strict", "Lax", or "None"
     secure: bool = False,
     http_only: bool = True,
 ) -> dict:
