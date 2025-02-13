@@ -20,6 +20,12 @@ pip install square_commons
 
 ## changelog
 
+### v1.5.0
+
+- new dependencies: pytest, pytest-mock.
+- added pytest test cases.
+- add github workflow for auto test on commit.
+
 ### v1.4.1
 
 - update default param for same_site to strict in api_utils -> create_cookie.
