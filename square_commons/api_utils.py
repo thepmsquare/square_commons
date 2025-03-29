@@ -17,9 +17,11 @@ def make_request_json_output(
     base_url,
     endpoint,
     data=None,
+    json=None,
     params=None,
     headers=None,
     files=None,
+    auth=None,
 ):
 
     try:
@@ -29,11 +31,12 @@ def make_request_json_output(
         response = requests.request(
             method,
             url,
-            json=data if files is None else None,
-            data=data if files else None,
+            json=json,
+            data=data,
             params=params,
             headers=headers,
             files=files,
+            auth=auth,
         )
         response.raise_for_status()
         return response.json()
