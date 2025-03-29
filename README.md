@@ -20,6 +20,14 @@ pip install square_commons
 
 ## changelog
 
+### v2.0.0
+
+- api_utils
+  - make_request_json_output have separate paramater for data and json.
+  - new optional parameter auth.
+- email
+  - add send_email_using_mailgun
+
 ### v1.5.0
 
 - new dependencies: pytest, pytest-mock.
