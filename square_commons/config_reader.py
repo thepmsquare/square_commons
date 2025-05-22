@@ -1,5 +1,6 @@
 import configparser
 import os
+import shutil
 from typing import Dict, List
 
 
@@ -8,7 +9,7 @@ class ConfigReader:
     A class to manage configuration settings from a file and environment variables.
     """
 
-    def __init__(self, file_path: str):
+    def __init__(self, file_path: str, sample_file_path: str = None):
         """
         Initializes the ConfigReader with the path to the configuration file.
 
@@ -19,7 +20,10 @@ class ConfigReader:
                 f"Invalid datatype received for file_path. Expected str, got {type(file_path).__name__}."
             )
         if not os.path.exists(file_path):
-            raise FileNotFoundError(f"File does not exist at path: {file_path}")
+            if sample_file_path and os.path.exists(sample_file_path):
+                shutil.copyfile(sample_file_path, file_path)
+            else:
+                raise FileNotFoundError(f"File does not exist at path: {file_path}")
 
         self.file_path = file_path
         self.config_parser = configparser.RawConfigParser()
@@ -41,7 +45,7 @@ class ConfigReader:
         return configuration
 
     def _read_environment_configuration_variables(
-            self, section: str, variables: List[str]
+        self, section: str, variables: List[str]
     ) -> Dict[str, str]:
         """
         Reads environment variables for the given section. Falls back to configuration file if not found in OS.

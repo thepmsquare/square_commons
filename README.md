@@ -20,13 +20,18 @@ pip install square_commons
 
 ## changelog
 
+### v2.1.0
+
+- config_reader
+    - new optional parameter sample_file_path.
+
 ### v2.0.0
 
 - api_utils
-  - make_request_json_output have separate paramater for data and json.
-  - new optional parameter auth.
+    - make_request_json_output have separate paramater for data and json.
+    - new optional parameter auth.
 - email
-  - add send_email_using_mailgun
+    - add send_email_using_mailgun
 
 ### v1.5.0
 
