@@ -44,6 +44,38 @@ def make_request_json_output(
         raise
 
 
+def make_request_text_output(
+    method,
+    base_url,
+    endpoint,
+    data=None,
+    json=None,
+    params=None,
+    headers=None,
+    files=None,
+    auth=None,
+):
+
+    try:
+        url = f"{base_url}/{endpoint}"
+        if headers:
+            headers = {key.replace("_", "-"): value for key, value in headers.items()}
+        response = requests.request(
+            method,
+            url,
+            json=json,
+            data=data,
+            params=params,
+            headers=headers,
+            files=files,
+            auth=auth,
+        )
+        response.raise_for_status()
+        return response.text
+    except Exception:
+        raise
+
+
 def create_cookie(
     key: str,
     value: str,

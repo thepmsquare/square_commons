@@ -20,6 +20,11 @@ pip install square_commons
 
 ## changelog
 
+### v2.2.0 (in progress)
+
+- api_utils
+    - add make_request_text_output.
+
 ### v2.1.0
 
 - config_reader

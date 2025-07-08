@@ -4,7 +4,7 @@ package_name = "square_commons"
 
 setup(
     name=package_name,
-    version="2.1.0",
+    version="2.2.0",
     packages=find_packages(),
     install_requires=[
         "configparser>=6.0.0",
