@@ -24,6 +24,7 @@ pip install square_commons
 
 - api_utils
     - add make_request_text_output.
+    - add make_request.
 
 ### v2.1.0
 
