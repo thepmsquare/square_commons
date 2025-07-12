@@ -20,10 +20,9 @@ pip install square_commons
 
 ## changelog
 
-### v2.2.0 (in progress)
+### v2.2.0
 
 - api_utils
-    - add make_request_text_output.
     - add make_request.
 
 ### v2.1.0
