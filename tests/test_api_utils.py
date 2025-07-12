@@ -7,6 +7,7 @@ from square_commons.api_utils import (
     get_api_output_in_standard_format,
     make_request_json_output,
     create_cookie,
+    make_request,
 )
 
 
@@ -68,3 +69,94 @@ def test_create_cookie():
 def test_create_cookie_invalid_expires():
     with pytest.raises(ValueError, match="Expires must be a datetime object."):
         create_cookie("key", "value", expires="invalid")
+
+
+def test_make_request_output_success(mocker):
+    mock_response = mocker.Mock()
+    mock_response.json.return_value = {"message": "Success"}
+    mock_response.raise_for_status = mocker.Mock()
+    mocker.patch("requests.request", return_value=mock_response)
+
+    result = make_request(
+        method="GET",
+        base_url="https://httpbin.org",
+        endpoint="get",
+        return_type="json",
+    )
+    assert result == {"message": "Success"}
+
+
+def test_make_request_output_failure(mocker):
+    mocker.patch("requests.request", side_effect=requests.RequestException)
+
+    with pytest.raises(Exception):
+        make_request(
+            method="GET",
+            base_url="https://httpbin.org",
+            endpoint="get",
+            return_type="json",
+        )
+
+
+def test_make_request_text_output_success(mocker):
+    mock_response = mocker.Mock()
+    mock_response.text = "<html><body>ok</body></html>"
+    mock_response.raise_for_status = mocker.Mock()
+    mocker.patch("requests.request", return_value=mock_response)
+
+    result = make_request(
+        method="GET",
+        base_url="https://httpbin.org",
+        endpoint="get",
+        return_type="text",
+    )
+    assert result == "<html><body>ok</body></html>"
+
+
+def test_make_request_bytes_output_success(mocker):
+    mock_response = mocker.Mock()
+    mock_response.content = b"binary-data"
+    mock_response.raise_for_status = mocker.Mock()
+    mocker.patch("requests.request", return_value=mock_response)
+
+    result = make_request(
+        method="GET",
+        base_url="https://httpbin.org",
+        endpoint="get",
+        return_type="bytes",
+    )
+    assert result == b"binary-data"
+
+
+def test_make_request_response_output_success(mocker):
+    mock_response = mocker.Mock()
+    mock_response.raise_for_status = mocker.Mock()
+    mocker.patch("requests.request", return_value=mock_response)
+
+    result = make_request(
+        method="GET",
+        base_url="https://httpbin.org",
+        endpoint="get",
+        return_type="response",
+    )
+    assert result is mock_response
+
+
+def test_make_request_passes_timeout(mocker):
+    mock_response = mocker.Mock()
+    mock_response.text = "ok"
+    mock_response.raise_for_status = mocker.Mock()
+
+    mock_request = mocker.patch("requests.request", return_value=mock_response)
+
+    result = make_request(
+        method="GET",
+        base_url="https://httpbin.org",
+        endpoint="get",
+        return_type="text",
+        timeout=5,
+    )
+    mock_request.assert_called_once()
+    _, kwargs = mock_request.call_args
+    assert kwargs["timeout"] == 5
+    assert result == "ok"
