@@ -1,6 +1,5 @@
-import time
 from datetime import datetime
-from typing import Any, Union, Literal, overload, Optional
+from typing import Any, Literal, overload, Optional
 
 import requests
 
@@ -45,38 +44,6 @@ def make_request_json_output(
         raise
 
 
-def make_request_text_output(
-    method,
-    base_url,
-    endpoint,
-    data=None,
-    json=None,
-    params=None,
-    headers=None,
-    files=None,
-    auth=None,
-):
-
-    try:
-        url = f"{base_url}/{endpoint}"
-        if headers:
-            headers = {key.replace("_", "-"): value for key, value in headers.items()}
-        response = requests.request(
-            method,
-            url,
-            json=json,
-            data=data,
-            params=params,
-            headers=headers,
-            files=files,
-            auth=auth,
-        )
-        response.raise_for_status()
-        return response.text
-    except Exception:
-        raise
-
-
 @overload
 def make_request(
     method: str,
@@ -89,10 +56,9 @@ def make_request(
     headers: Optional[dict] = ...,
     files: Optional[dict] = ...,
     auth: Optional[Any] = ...,
-    timeout: int = ...,
-    retries: int = ...,
+    timeout: Optional[float] = ...,
     return_type: Literal["json"],
-) -> dict: ...
+) -> Any: ...
 
 
 @overload
@@ -107,8 +73,7 @@ def make_request(
     headers: Optional[dict] = ...,
     files: Optional[dict] = ...,
     auth: Optional[Any] = ...,
-    timeout: int = ...,
-    retries: int = ...,
+    timeout: Optional[float] = ...,
     return_type: Literal["text"],
 ) -> str: ...
 
@@ -125,9 +90,8 @@ def make_request(
     headers: Optional[dict] = ...,
     files: Optional[dict] = ...,
     auth: Optional[Any] = ...,
-    timeout: int = ...,
-    retries: int = ...,
-    return_type: Literal["content"],
+    timeout: Optional[float] = ...,
+    return_type: Literal["bytes"],
 ) -> bytes: ...
 
 
@@ -143,10 +107,9 @@ def make_request(
     headers: Optional[dict] = ...,
     files: Optional[dict] = ...,
     auth: Optional[Any] = ...,
-    timeout: int = ...,
-    retries: int = ...,
-    return_type: Literal["any"],
-) -> Any: ...
+    timeout: Optional[float] = ...,
+    return_type: Literal["response"],
+) -> requests.Response: ...
 
 
 def make_request(
@@ -160,43 +123,38 @@ def make_request(
     headers: Optional[dict] = None,
     files: Optional[dict] = None,
     auth: Optional[Any] = None,
-    timeout: int = 10,
-    retries: int = 3,
-    return_type: Literal["json", "text", "content", "any"] = "text",
-) -> Union[dict, str, bytes, Any]:
+    timeout: Optional[float] = None,
+    return_type: Literal["json", "text", "bytes", "response"] = "text",
+) -> Any:
     url = f"{base_url.rstrip('/')}/{endpoint.lstrip('/')}"
 
     if headers:
         headers = {key.replace("_", "-"): value for key, value in headers.items()}
 
-    for attempt in range(retries):
-        try:
-            response = requests.request(
-                method,
-                url,
-                json=json,
-                data=data,
-                params=params,
-                headers=headers,
-                files=files,
-                auth=auth,
-                timeout=timeout,
-            )
-            response.raise_for_status()
+    try:
+        response = requests.request(
+            method,
+            url,
+            json=json,
+            data=data,
+            params=params,
+            headers=headers,
+            files=files,
+            auth=auth,
+            timeout=timeout,
+        )
+        response.raise_for_status()
 
-            if return_type == "json":
-                return response.json()
-            elif return_type == "content":
-                return response.content
-            elif return_type == "any":
-                return response.json()  # or .text depending on caller’s context
-            else:
-                return response.text
-
-        except Exception as e:
-            if attempt == retries - 1:
-                raise
-            time.sleep(1)
+        if return_type == "json":
+            return response.json()
+        elif return_type == "bytes":
+            return response.content
+        elif return_type == "response":
+            return response
+        else:
+            return response.text
+    except Exception:
+        raise
 
 
 def create_cookie(
