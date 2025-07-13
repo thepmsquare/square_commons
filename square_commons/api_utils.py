@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Any, Literal, overload, Optional
 
 import requests
+from deprecated import deprecated
 
 
 def get_api_output_in_standard_format(
@@ -12,6 +13,9 @@ def get_api_output_in_standard_format(
     return {"data": data, "message": message, "log": log}
 
 
+@deprecated(
+    "make_request_json_output has been deprecated, use make_request with return_type='json' instead."
+)
 def make_request_json_output(
     method,
     base_url,
@@ -22,34 +26,28 @@ def make_request_json_output(
     headers=None,
     files=None,
     auth=None,
-):
-
-    try:
-        url = f"{base_url}/{endpoint}"
-        if headers:
-            headers = {key.replace("_", "-"): value for key, value in headers.items()}
-        response = requests.request(
-            method,
-            url,
-            json=json,
-            data=data,
-            params=params,
-            headers=headers,
-            files=files,
-            auth=auth,
-        )
-        response.raise_for_status()
-        return response.json()
-    except Exception:
-        raise
+) -> Any:
+    return make_request(
+        method=method,
+        url=base_url,
+        endpoint=endpoint,
+        data=data,
+        json=json,
+        params=params,
+        headers=headers,
+        files=files,
+        auth=auth,
+        timeout=None,
+        return_type="json",
+    )
 
 
 @overload
 def make_request(
     method: str,
-    base_url: str,
-    endpoint: str,
+    url: str,
     *,
+    endpoint: Optional[str] = ...,
     data: Optional[dict] = ...,
     json: Optional[dict] = ...,
     params: Optional[dict] = ...,
@@ -64,9 +62,9 @@ def make_request(
 @overload
 def make_request(
     method: str,
-    base_url: str,
-    endpoint: str,
+    url: str,
     *,
+    endpoint: Optional[str] = ...,
     data: Optional[dict] = ...,
     json: Optional[dict] = ...,
     params: Optional[dict] = ...,
@@ -81,9 +79,9 @@ def make_request(
 @overload
 def make_request(
     method: str,
-    base_url: str,
-    endpoint: str,
+    url: str,
     *,
+    endpoint: Optional[str] = ...,
     data: Optional[dict] = ...,
     json: Optional[dict] = ...,
     params: Optional[dict] = ...,
@@ -98,9 +96,9 @@ def make_request(
 @overload
 def make_request(
     method: str,
-    base_url: str,
-    endpoint: str,
+    url: str,
     *,
+    endpoint: Optional[str] = ...,
     data: Optional[dict] = ...,
     json: Optional[dict] = ...,
     params: Optional[dict] = ...,
@@ -114,9 +112,9 @@ def make_request(
 
 def make_request(
     method: str,
-    base_url: str,
-    endpoint: str,
+    url: str,
     *,
+    endpoint: Optional[str] = None,
     data: Optional[dict] = None,
     json: Optional[dict] = None,
     params: Optional[dict] = None,
@@ -126,11 +124,12 @@ def make_request(
     timeout: Optional[float] = None,
     return_type: Literal["json", "text", "bytes", "response"] = "text",
 ) -> Any:
-    url = f"{base_url.rstrip('/')}/{endpoint.lstrip('/')}"
 
     if headers:
         headers = {key.replace("_", "-"): value for key, value in headers.items()}
 
+    if endpoint:
+        url = f"{url.rstrip('/')}/{endpoint.lstrip('/')}"
     try:
         response = requests.request(
             method,

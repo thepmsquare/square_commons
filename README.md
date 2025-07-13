@@ -20,6 +20,17 @@ pip install square_commons
 
 ## changelog
 
+### v3.0.0
+
+- api_utils
+    - **breaking_change** in make_request change base_url to url.
+    - in make_request change endpoint to optional kwarg.
+    - mark make_request_json_output as deprecated.
+- dependencies
+    - add Deprecated>=1.2.18.
+- tests
+    - update test cases to account for change base_url to url in make_request.
+
 ### v2.2.0
 
 - api_utils

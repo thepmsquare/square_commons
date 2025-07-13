@@ -79,7 +79,7 @@ def test_make_request_output_success(mocker):
 
     result = make_request(
         method="GET",
-        base_url="https://httpbin.org",
+        url="https://httpbin.org",
         endpoint="get",
         return_type="json",
     )
@@ -92,7 +92,7 @@ def test_make_request_output_failure(mocker):
     with pytest.raises(Exception):
         make_request(
             method="GET",
-            base_url="https://httpbin.org",
+            url="https://httpbin.org",
             endpoint="get",
             return_type="json",
         )
@@ -106,7 +106,7 @@ def test_make_request_text_output_success(mocker):
 
     result = make_request(
         method="GET",
-        base_url="https://httpbin.org",
+        url="https://httpbin.org",
         endpoint="get",
         return_type="text",
     )
@@ -121,7 +121,7 @@ def test_make_request_bytes_output_success(mocker):
 
     result = make_request(
         method="GET",
-        base_url="https://httpbin.org",
+        url="https://httpbin.org",
         endpoint="get",
         return_type="bytes",
     )
@@ -135,7 +135,7 @@ def test_make_request_response_output_success(mocker):
 
     result = make_request(
         method="GET",
-        base_url="https://httpbin.org",
+        url="https://httpbin.org",
         endpoint="get",
         return_type="response",
     )
@@ -151,7 +151,7 @@ def test_make_request_passes_timeout(mocker):
 
     result = make_request(
         method="GET",
-        base_url="https://httpbin.org",
+        url="https://httpbin.org",
         endpoint="get",
         return_type="text",
         timeout=5,

@@ -4,13 +4,14 @@ package_name = "square_commons"
 
 setup(
     name=package_name,
-    version="2.2.0",
+    version="3.0.0",
     packages=find_packages(),
     install_requires=[
         "configparser>=6.0.0",
         "requests>=2.32.3",
         "pytest>=8.3.3",
         "pytest-mock>=3.14.0",
+        "Deprecated>=1.2.18",
     ],
     extras_require={},
     author="thePmSquare",

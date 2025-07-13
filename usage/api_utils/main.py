@@ -49,7 +49,7 @@ try:
         files = {"file": file}
         result = make_request(
             method="POST",
-            base_url="https://httpbin.org",
+            url="https://httpbin.org",
             endpoint="post",
             files=files,
             return_type="json",
