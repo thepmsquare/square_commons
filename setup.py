@@ -4,7 +4,7 @@ package_name = "square_commons"
 
 setup(
     name=package_name,
-    version="3.0.0",
+    version="3.0.1",
     packages=find_packages(),
     install_requires=[
         "configparser>=6.0.0",
@@ -14,17 +14,20 @@ setup(
         "Deprecated>=1.2.18",
     ],
     extras_require={},
-    author="thePmSquare",
+    author="Parth Mukesh Mangtani",
     author_email="thepmsquare@gmail.com",
     description="helper module containing common functions for all my python modules.",
-    long_description=open("README.md", "r").read(),
+    long_description=open("README.md", "r", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     url=f"https://github.com/thepmsquare/{package_name}",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Utilities",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 )
