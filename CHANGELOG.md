@@ -1,13 +1,10 @@
 # changelog
 
-## v3.0.5
-
-- update pytest github action.
-- update pypi publish github action.
-
 ## v3.0.4
 
 - switch build-system to uv.
+- update pytest github action.
+- update pypi publish github action.
 
 ## v3.0.3
 
